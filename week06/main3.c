@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
 	char c;	
 	
 	printf("Input a string: ");
-	while((c=getchar()) != '\n'){S
+	while((c=getchar()) != '\n'){
 		if (c>=48 && c<=57){
 			num++;
 		}
