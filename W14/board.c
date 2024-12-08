@@ -55,7 +55,11 @@ int board_initBoard(void)
         board_coin[i] = 0;               // Initialize coins to 0
     }
     
-    // Place coins
+// ----- EX. 5 : shark ------------
+    shark_position = SHARK_INITPOS;
+// ----- EX. 5 : shark ------------
+
+    //coin allocation
     for (i = 0; i < N_COINPOS; i++) {
         while (1) { // Loop until a valid position is found
             randomPos = rand() % N_BOARD; // Random position within the board range
@@ -67,15 +71,6 @@ int board_initBoard(void)
             }
         }
     }
-    
-    return 0; // Return success
-}
-// ----- EX. 5 : shark ------------
-    shark_position = SHARK_INITPOS;
-// ----- EX. 5 : shark ------------
-
-    //coin allocation
-   
     
     return N_COINPOS;
 }

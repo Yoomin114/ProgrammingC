@@ -149,7 +149,7 @@ int main(int argc, const char * argv[]) {
 
 // ----- EX. 1 : Preparation------------
 // Call the rand initialization function to generate random numbers differently each time.
-    srand(unsinged(time(NULL)));
+	srand((unsigned)time(NULL));
     opening();
 // ----- EX. 1 : Preparation------------
 
@@ -164,9 +164,12 @@ int main(int argc, const char * argv[]) {
     //step1-2 : initialize player
     for (i=0;i<N_PLAYER;i++)
     {
+    	// Initialize various variable values (position, coin, status)
         player_position[i] = 0;
         player_coin[i] = 0;
         player_status[i] = PLAYERSTATUS_LIVE;
+        
+        // Get a user's name
         printf("Player %i's name: ", i);
         scanf("%s", player_name[i]);
     }
@@ -199,21 +202,14 @@ int main(int argc, const char * argv[]) {
 
 // ----- EX. 4 : player ------------
         printPlayerStatus();
-
-
 // ----- EX. 4 : player ------------
         //step 2-2. rolling die
-
-
-// ----- EX. 4 : player ------------
-        printf("%s turn!! ", player_name[turn]);
-        printf("Press any key to roll a dice!\n");
+        printf("%s turn!! ", player_name[turn]); // Output player turn
+        printf("Press any key to roll a die!\n");
         scanf("%d", &dum);
-        fflush(stdin);
-
-
+        fflush(stdin); 
 // ----- EX. 4 : player ------------
-        dieResult = rolldie();
+        dieResult = rolldie(); // Calling a function to receive input and roll the dice
         
         
         //step 2-3. moving
