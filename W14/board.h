@@ -27,6 +27,4 @@ int board_getSharkPosition(void);
 int board_stepShark(void);
 void board_printBoardStatus(void); // Print the damage to a specific slot
 
-
-// ----- EX. 3 : board ------------
 #endif /* board_h */

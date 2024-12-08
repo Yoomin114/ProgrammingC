@@ -6,20 +6,18 @@
 #include "board.h"
 
 // ----- EX. 3 : board ------------
-// 
 #define N_COINPOS       12 // Number of coins allocated to a game
 #define MAX_COIN        4 // Maximum number of coins that can fit in a board
-// ----- EX. 3 : board ------------
 
 // ----- EX. 5 : shark ------------
 #define MAX_SHARKSTEP   6  //The maximum number of boards a shark can advance on is 6.
 #define SHARK_INITPOS   -4 //Set the shark's initial position to board -4
-// ----- EX. 5 : shark ------------
 
 // ----- EX. 3 : board ------------
 static int board_coin[N_BOARD];
-static int board_status[N_BOARD]; //0 - OK, 1 - destroyed
-// ----- EX. 3 : board ------------
+static int board_status[N_BOARD];
+//0 - OK, 1 - destroyed
+
 static int shark_position;
 
 
@@ -74,9 +72,6 @@ int board_initBoard(void)
     return N_COINPOS;
 }
 
-// ----- EX. 3 : board ------------
-
-
 // ----- EX. 5 : shark ------------
 // Shark Movement Function
 int board_stepShark(void)
@@ -88,7 +83,6 @@ int board_stepShark(void)
     
     return shark_position;
 }
-// ----- EX. 5 : shark ------------
 
 
 // ----- EX. 3 : board ------------
@@ -108,6 +102,4 @@ int board_getBoardCoin(int pos)
     return coin;
     // Returns the value of the board_coin array, making the array value 0.
 }
-// ----- EX. 3 : board ------------
-
 
