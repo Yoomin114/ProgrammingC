@@ -31,15 +31,16 @@ void board_printBoardStatus(void)
     int i;
     
     printf("----------------------- BOARD STATUS -----------------------\n");
-    for (i=0;i<N_BOARD;i++) //Our definition of N_BOARD is 20
+    for (i=0;i<N_BOARD;i++) { //Our definition of N_BOARD is 20
     
         printf("|"); // Use | to divide the board.
         if (board_status[i] == BOARDSTATUS_NOK) // If the status of the board is NOT OKAY, it has 1. 
-            printf("X"); // Print an X because it was eaten by a shark.
+            printf("X"); // Print X because it was eaten by a shark.
         else
             printf("O"); // Since it is the surviving board, it prints O.
     }
-    printf("|\n");
+    
+    printf("\n");
     printf("------------------------------------------------------------\n");
 }
 
@@ -55,7 +56,7 @@ int board_initBoard(void)
     }
     
     // Place coins
-    for (i = 0; i < COINPOS; i++) {
+    for (i = 0; i < N_COINPOS; i++) {
         while (1) { // Loop until a valid position is found
             randomPos = rand() % N_BOARD; // Random position within the board range
 

@@ -149,7 +149,7 @@ int main(int argc, const char * argv[]) {
 
 // ----- EX. 1 : Preparation------------
 // Call the rand initialization function to generate random numbers differently each time.
-    srand(unsigned(time(NULL)));
+    srand(unsinged(time(NULL)));
     opening();
 // ----- EX. 1 : Preparation------------
 
