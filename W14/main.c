@@ -101,7 +101,7 @@ void printPlayerPosition(int player)
 void printPlayerStatus(void)
 {
     int i;
-    printf("player status ---\n");
+    printf("\nplayer status ---\n");
     for (i=0;i<N_PLAYER;i++)
     {
         printf("%s : pos %i, coin %i, status %s\n", player_name[i], player_position[i], player_coin[i], player_statusString[player_status[i]]);
@@ -198,7 +198,7 @@ int main(int argc, const char * argv[]) {
     
     int i;
     int turn=0;
-
+	int numTurns = 0; // Add a counter for the number of turns taken by players
 
 // ----- EX. 1 : Preparation------------
 // Call the rand initialization function to generate random numbers differently each time.
@@ -232,16 +232,15 @@ int main(int argc, const char * argv[]) {
     do {
     	
         int dieResult;
-        int coinResult;
         int dum;
 
 
 // ----- EX. 4 : player ------------
-        if (player_status[turn] != PLAYERSTATUS_LIVE) {
-            turn = (turn + 1)%N_PLAYER;
-            continue;
-        }
-        
+    	// Skip players who are not alive
+    	if (player_status[turn] != PLAYERSTATUS_LIVE) {
+        	turn = (turn + 1) % N_PLAYER; // Skip this player and move to the next
+        	continue;
+    	} 
         
 // ----- EX. 4 : player ------------     
         //step 2-1. status printing
@@ -249,7 +248,6 @@ int main(int argc, const char * argv[]) {
 
 // ----- EX. 3 : board ------------
         board_printBoardStatus();
-
 
 // ----- EX. 4 : player ------------
         //step 2-2. rolling die
@@ -272,23 +270,36 @@ int main(int argc, const char * argv[]) {
 		int coinsAtPosition = board_getBoardCoin(pos);  // Use the function to get the coin count
 		
 		if (coinsAtPosition > 0) {
-			printf("%s picked up %d coins at position %d!\n", player_name[turn], coinsAtPosition, pos);
+			printf("\n%s picked up %d coins at position %d!\n", player_name[turn], coinsAtPosition, pos);
 			player_coin[turn] += coinsAtPosition;  // Add the coins to the player's total
 		}
+		
+		//step 2-5. end process
+		
+		// Check if player died (if on a shark position before a shark moves)
+        checkDie();
+        
+        // Move to the next player's turn
+        turn = (turn + 1) % N_PLAYER;
+        
+        // All players completed their turn-> move the shark.
+        numTurns++;
+        
+        if (numTurns == N_PLAYER) {
+            int shark_pos = board_stepShark();  // Move shark
+            printf("\nShark moved to position %i\n", shark_pos);
 
-        //step 2-5. end process
-        if (turn ==0){
-        	int shark_pos = board_stepShark();
-        	printf("Shark moved to %i\n", shark_pos);
-        	
-			checkDie();
-		}
+            // Check for any deaths caused by the shark
+            checkDie();
 
+            numTurns = 0;  // Reset the number of turns after the shark moves
+        }
+        
 // ----- EX. 6 : game end ------------
     } while(game_end() == 0);
     
     //step 3. game end process
-    printf("GAME END!!\n");
+    printf("\nGAME END!!\n");
     printf("%i players are alive! winner is %s\n", getAlivePlayer(), player_name[getWinner()]);
     
 // ----- EX. 2 : structuring ------------

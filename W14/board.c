@@ -38,8 +38,8 @@ void board_printBoardStatus(void)
             printf("O"); // Since it is the surviving board, it prints O.
     }
     
-    printf("\n");
-    printf("------------------------------------------------------------\n");
+    printf("|\n");
+    printf("------------------------------------------------------------\n\n");
 }
 
 // Board Initialization Function
