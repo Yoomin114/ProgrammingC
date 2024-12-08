@@ -22,7 +22,7 @@
 // Designing Interface Functions
 int board_initBoard(void); //board initialization.
 int board_getBoardStatus(int pos); // Print the status of the entire board
-int board_getBoardCoin(int pos);
+int board_getBoardCoin(int pos); // Picking up coins in the pos board slot
 int board_getSharkPosition(void);
 int board_stepShark(void);
 void board_printBoardStatus(void); // Print the damage to a specific slot

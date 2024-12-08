@@ -7,8 +7,8 @@
 
 // ----- EX. 3 : board ------------
 // 
-#define N_COINPOS       12 // Number of boards where coins can be located
-#define MAX_COIN        4 // Maximum number of coins
+#define N_COINPOS       12 // Number of coins allocated to a game
+#define MAX_COIN        4 // Maximum number of coins that can fit in a board
 // ----- EX. 3 : board ------------
 
 // ----- EX. 5 : shark ------------
@@ -46,19 +46,29 @@ void board_printBoardStatus(void)
 // Board Initialization Function
 int board_initBoard(void)
 {
-    int i;
+    int i, randomPos;
     
-    //variable initialization
-    for (i=0;i<N_BOARD;i++)
-    {
-        board_status[i] = BOARDSTATUS_OK;
-        board_coin[i] = 0;
+    // Initialize board variables
+    for (i = 0; i < N_BOARD; i++) {
+        board_status[i] = BOARDSTATUS_OK; // Set board status to "OK"
+        board_coin[i] = 0;               // Initialize coins to 0
     }
     
-    for (i=0; i<COINPOS; i++){
-    	while ()
-	}
+    // Place coins
+    for (i = 0; i < COINPOS; i++) {
+        while (1) { // Loop until a valid position is found
+            randomPos = rand() % N_BOARD; // Random position within the board range
+
+            // Check if a coin is already placed in the random position
+            if (board_coin[randomPos] == 0) {
+                board_coin[randomPos] = 1 + (rand() % MAX_COIN); // Assign a random coin value (1 to MAX_COIN)
+                break; // Exit the loop once a valid position is assigned
+            }
+        }
+    }
     
+    return 0; // Return success
+}
 // ----- EX. 5 : shark ------------
     shark_position = SHARK_INITPOS;
 // ----- EX. 5 : shark ------------
