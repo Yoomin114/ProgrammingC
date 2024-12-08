@@ -45,7 +45,7 @@ int rolldie(void)
 {
     return rand()%MAX_DIE+1;
 }
-// ----- EX. 3 : board ------------
+
 
 // ----- EX. 1 : Preparation------------
 void opening(void)
@@ -56,7 +56,6 @@ void opening(void)
     printf("==============================================================\n");
     printf("==============================================================\n");
 }
-// ----- EX. 1 : Preparation------------
 
 // ----- EX. 6 : game end ------------
 int game_end(void)
@@ -76,7 +75,7 @@ int game_end(void)
     
     return flag_end;
 }
-// ----- EX. 6 : game end ------------
+
 
 // ----- EX. 4 : player ------------
 void printPlayerPosition(int player)
@@ -110,7 +109,7 @@ void printPlayerStatus(void)
     }
     printf("-----------------\n");
 }
-// ----- EX. 4 : player ------------
+
 
 // ----- EX. 5 : shark ------------
 void checkDie(void)
@@ -126,7 +125,7 @@ void checkDie(void)
         }
     }
 }
-// ----- EX. 5 : shark ------------
+
 
 // ----- EX. 6 : game end ------------
 // Get the number of players that survived
@@ -192,9 +191,9 @@ int getWinner(void)
     
     return winner;
 }
-// ----- EX. 6 : game end ------------
 
 
+// ----------main------------
 int main(int argc, const char * argv[]) {
     
     int i;
@@ -205,7 +204,6 @@ int main(int argc, const char * argv[]) {
 // Call the rand initialization function to generate random numbers differently each time.
 	srand((unsigned)time(NULL));
     opening();
-// ----- EX. 1 : Preparation------------
 
 
 // ----- EX. 2 : structuring ------------
@@ -248,10 +246,9 @@ int main(int argc, const char * argv[]) {
 // ----- EX. 4 : player ------------     
         //step 2-1. status printing
         printPlayerStatus();
-        
+
 // ----- EX. 3 : board ------------
         board_printBoardStatus();
-// ----- EX. 3 : board ------------
 
 
 // ----- EX. 4 : player ------------
@@ -260,13 +257,14 @@ int main(int argc, const char * argv[]) {
         printf("Press any key to roll a die!\n");
         scanf("%d", &dum);
         fflush(stdin); 
+        
 // ----- EX. 4 : player ------------
         dieResult = rolldie(); // Calling a function to receive input and roll the dice
         
+		//step 2-3. moving
+		player_position[turn] = (player_position[turn] + dieResult) % N_BOARD;
         
-        //step 2-3. moving
-   		player_position[turn] = (player_position[turn] + dieResult) % N_BOARD;
-        //step 2-4. coin
+		//step 2-4. coin
     	int pos = player_position[turn];
     	
 		if (board_coin > 0) {
@@ -284,7 +282,6 @@ int main(int argc, const char * argv[]) {
     //step 3. game end process
     printf("GAME END!!\n");
     printf("%i players are alive! winner is %s\n", getAlivePlayer(), player_name[getWinner()]);
-// ----- EX. 6 : game end ------------
     
 // ----- EX. 2 : structuring ------------
 
