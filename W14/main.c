@@ -264,15 +264,18 @@ int main(int argc, const char * argv[]) {
 		//step 2-3. moving
 		player_position[turn] = (player_position[turn] + dieResult) % N_BOARD;
         
+		// ----- EX. 4 : player ------------
 		//step 2-4. coin
-    	int pos = player_position[turn];
-    	
-		if (board_coin > 0) {
-    		printf("%s picked up %d coins at position %d!\n", player_name[turn], board_coin[pos], pos);
-    		player_coin[turn] += board_coin[pos]; // Get coin
-    		board_coin[pos] = 0; // Remove coins from the location
+		int pos = player_position[turn]; // Save the moved location
+		
+		// Call board_getBoardCoin function to obtain number of coins
+		int coinsAtPosition = board_getBoardCoin(pos);  // Use the function to get the coin count
+		
+		if (coinsAtPosition > 0) {
+			printf("%s picked up %d coins at position %d!\n", player_name[turn], coinsAtPosition, pos);
+			player_coin[turn] += coinsAtPosition;  // Add the coins to the player's total
 		}
-        
+
         //step 2-5. end process
     	checkDie();
     	

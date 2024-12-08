@@ -86,20 +86,24 @@ int board_stepShark(void)
 
 
 // ----- EX. 3 : board ------------
+/*
+static int board_status[N_BOARD];
+static int board_coin[N_BOARD];
+These arrays are used only inside board.c and should not be accessed directly by other files.
+Instead, you must interact with them through functions
+such as 'board_getBoardStatus' and 'board_getBoardCoin'.
+*/
+
 int board_getBoardStatus(int pos)
 {
-    return board_status[pos];
-    // Return board_status array elements
+    return board_status[pos];  // Returns the status of the board at position `pos`
 }
 
 int board_getBoardCoin(int pos)
 {
-	
-    int coin = board_coin[pos];
-    //The action of picking up the coin in the posth board compartment
-	
-	board_coin[pos] = 0;
-    return coin;
-    // Returns the value of the board_coin array, making the array value 0.
+    int coin = board_coin[pos]; 
+    board_coin[pos] = 0;         // Sets the coin count at the specified position to 0
+    return coin;                 // Returns the number of coins at the specified positions
 }
+
 
