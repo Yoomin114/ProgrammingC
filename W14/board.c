@@ -57,7 +57,6 @@ int board_initBoard(void)
     
 // ----- EX. 5 : shark ------------
     shark_position = SHARK_INITPOS;
-// ----- EX. 5 : shark ------------
 
     //coin allocation
     for (i = 0; i < N_COINPOS; i++) {
@@ -74,13 +73,20 @@ int board_initBoard(void)
     
     return N_COINPOS;
 }
+
 // ----- EX. 3 : board ------------
 
 
 // ----- EX. 5 : shark ------------
+// Shark Movement Function
 int board_stepShark(void)
 {
-
+    shark_position += rand() % MAX_SHARKSTEP + 1; // // Randomly move 1 to 6 spaces
+    if (shark_position >= N_BOARD) {
+        shark_position = N_BOARD - 1; // Processing not to cross the end of the board
+    }
+    
+    return shark_position;
 }
 // ----- EX. 5 : shark ------------
 

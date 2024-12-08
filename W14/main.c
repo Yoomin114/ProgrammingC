@@ -39,7 +39,6 @@ char player_name[N_PLAYER][MAX_CHARNAME];
 int player_coin[N_PLAYER];
 int player_status[N_PLAYER]; //0 - live, 1 - die, 2 - end
 char player_statusString[3][MAX_CHARNAME] = {"LIVE", "DIE", "END"};
-// ----- EX. 4 : player ------------
 
 // ----- EX. 3 : board ------------
 int rolldie(void)
@@ -248,15 +247,13 @@ int main(int argc, const char * argv[]) {
         
 // ----- EX. 4 : player ------------     
         //step 2-1. status printing
-        
+        printPlayerStatus();
         
 // ----- EX. 3 : board ------------
         board_printBoardStatus();
 // ----- EX. 3 : board ------------
 
 
-// ----- EX. 4 : player ------------
-        printPlayerStatus();
 // ----- EX. 4 : player ------------
         //step 2-2. rolling die
         printf("%s turn!! ", player_name[turn]); // Output player turn
