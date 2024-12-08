@@ -64,12 +64,10 @@ int game_end(void)
     int flag_end = 1;
     
     //if all the players are died?
-    for (i=0;i<N_PLAYER;i++)
-    {
-        if (player_status[i] == PLAYERSTATUS_LIVE)
-        {
-            flag_end = 0;
-            break;
+    for (i = 0; i < N_PLAYER; i++) {
+    	
+        if (player_status[i] == PLAYERSTATUS_LIVE || player_status[i] == PLAYERSTATUS_END) {
+            return 0; // Continue the game if at least one player is still playing
         }
     }
     
@@ -129,15 +127,17 @@ void checkDie(void)
 // Get the number of players that survived
 int getAlivePlayer(void)
 {
-	int i, alive_count =0;
-	
-	for(i = 0; i < N_PLAYER; i++){
-		if(player_status[i] == PLAYERSTATUS_END){ //check for alive status
-			alive_count++;
-		}
-	}
-	return alive_count;
+    int i, alive_count = 0;
+
+    for (i = 0; i < N_PLAYER; i++) {
+        // Include live players
+		if (player_status[i] == PLAYERSTATUS_LIVE || player_status[i] == PLAYERSTATUS_END) { 
+            alive_count++;
+        }
+    }
+    return alive_count;
 }
+
 
 /*
 Game end conditions based on the number of alive players and coin comparison
@@ -152,7 +152,6 @@ Game end conditions based on the number of alive players and coin comparison
 int getWinner(void)
 {
     int i;
-    int alive_count = 0;
     int winner =-1;
     int max_coin = -1;
     int earliest_finish = N_BOARD +1; // A value larger than the maximum board position
@@ -160,38 +159,19 @@ int getWinner(void)
     
 
     for (i = 0; i < N_PLAYER; i++) {
-        if (player_status[i] == PLAYERSTATUS_LIVE) { // Only consider live players 
-            alive_count++;
-            // Compare coin values
-            if (player_coin[i] > max_coin) {
-                max_coin = player_coin[i];
-                winner = i;
-                earliest_finish = player_position[i];
-            }
-            // If coin counts are the same, compare positions
-            else if (player_coin[i] == max_coin) { 
-                if (player_position[i] < earliest_finish) {
-                    winner = i;
-                    earliest_finish = player_position[i];
-                }
+		// Only consider live players 
+        if (player_status[i] == PLAYERSTATUS_LIVE || player_status[i] == PLAYERSTATUS_END) {
+            // Check if the player has collected more coins than the current maximum
+            // OR if they have collected the same number of coins but finished earlier
+            if (player_coin[i] > max_coin || 
+                (player_coin[i] == max_coin && player_position[i] < earliest_finish)) {
+                max_coin = player_coin[i]; // Update the maximum coins
+                earliest_finish = player_position[i]; // Update the earliest finish position
+                winner = i; // Set the current player as the winner
             }
         }
     }
-    
-    if (alive_count == 1) { // If only one player is alive, they win
-        for (i = 0; i < N_PLAYER; i++) {
-            if (player_status[i] == PLAYERSTATUS_LIVE) {
-                winner = i;
-                break;
-            }
-        }
-    }
-    
-    if (winner == -1) { // If no winner was determined
-    	printf("No players survived. No winner!\n");
-    	return -1;
-	}
-		
+    	
     return winner;
 }
 
@@ -291,8 +271,10 @@ int main(int argc, const char * argv[]) {
         checkDie();
         
         // Move to the next player's turn
-        turn = (turn + 1) % N_PLAYER;
-        
+		if (player_status[turn] == PLAYERSTATUS_LIVE) {
+			turn = (turn + 1) % N_PLAYER;
+		}
+
         // All players completed their turn-> move the shark.
         numTurns++;
         
@@ -307,13 +289,21 @@ int main(int argc, const char * argv[]) {
         }
         
 // ----- EX. 6 : game end ------------
-    } while(game_end() == 0);
-    
-    //step 3. game end process
-    printf("\nGAME END!!\n");
-    printf("%i players are alive! winner is %s\n", getAlivePlayer(), player_name[getWinner()]);
-    
-// ----- EX. 2 : structuring ------------
+   } while(game_end() == 0);
 
-    return 0;
+	// step 3. game end process
+	printf("\nGAME END!!\n");
+
+	// Determine the winner after the game ends
+	int winner = getWinner();
+
+	if (winner == -1) {
+    	printf("No players survived. No winner!\n");
+	} 
+	else {
+    	printf("%i players are alive! Winner is %s\n", getAlivePlayer(), player_name[winner]);
+	}
+
+// ----- EX. 2 : structuring ------------
+	return 0;
 }
