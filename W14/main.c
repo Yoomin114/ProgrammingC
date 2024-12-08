@@ -119,6 +119,7 @@ void checkDie(void)
     int i;
     for (i=0;i<N_PLAYER;i++)
     {
+    	//Correct status check
         if (board_getBoardStatus(player_position[i]) == BOARDSTATUS_NOK)
         {
             printf("%s in pos %i has died!! (coin %i)\n", player_name[i], player_position[i], player_coin[i]);
@@ -129,14 +130,68 @@ void checkDie(void)
 // ----- EX. 5 : shark ------------
 
 // ----- EX. 6 : game end ------------
+// Get the number of players that survived
 int getAlivePlayer(void)
 {
-   
+	int i, alive_count =0;
+	
+	for(i = 0; i < N_PLAYER; i++){
+		if(player_status[i] == PLAYERSTATUS_END){ //check for alive status
+			alive_count++;
+		}
+	}
+	return alive_count;
 }
+
+/*
+Game end conditions based on the number of alive players and coin comparison
+
+1. Win if one of the three survived
+2. If 2 survive, compare the number of coins to win
+3. If all 3 survive, compare the number of coins to win
+(If the number of coins is the same, the person who arrived earlier wins)
+4. No winners if all did not survive
+*/
 
 int getWinner(void)
 {
+    int i;
+    int alive_count = 0;
+    int winner =-1;
+    int max_coin = -1;
+    int earliest_finish = N_BOARD +1; // A value larger than the maximum board position
     
+    
+
+    for (i = 0; i < N_PLAYER; i++) {
+        if (player_status[i] == PLAYERSTATUS_LIVE) { // Only consider live players 
+            alive_count++;
+            // Compare coin values
+            if (player_coin[i] > max_coin) {
+                max_coin = player_coin[i];
+                winner = i;
+                earliest_finish = player_position[i];
+            }
+            // If coin counts are the same, compare positions
+            else if (player_coin[i] == max_coin) { 
+                if (player_position[i] < earliest_finish) {
+                    winner = i;
+                    earliest_finish = player_position[i];
+                }
+            }
+        }
+    }
+    
+    if (alive_count == 1) { // If only one player is alive, they win
+        for (i = 0; i < N_PLAYER; i++) {
+            if (player_status[i] == PLAYERSTATUS_LIVE) {
+                winner = i;
+                break;
+            }
+        }
+    }
+    
+    return winner;
 }
 // ----- EX. 6 : game end ------------
 
@@ -178,14 +233,14 @@ int main(int argc, const char * argv[]) {
 // ----- EX. 4 : player ------------  
     //step 2. : game start, turn loop
     do {
+    	
         int dieResult;
         int coinResult;
         int dum;
 
 
 // ----- EX. 4 : player ------------
-        if (player_status[turn] != PLAYERSTATUS_LIVE)
-        {
+        if (player_status[turn] != PLAYERSTATUS_LIVE) {
             turn = (turn + 1)%N_PLAYER;
             continue;
         }
@@ -213,12 +268,19 @@ int main(int argc, const char * argv[]) {
         
         
         //step 2-3. moving
-   
+   		player_position[turn] = (player_position[turn] + dieResult) % N_BOARD;
         //step 2-4. coin
-    
+    	int pos = player_position[turn];
+    	
+		if (board_coin > 0) {
+    		printf("%s picked up %d coins at position %d!\n", player_name[turn], board_coin[pos], pos);
+    		player_coin[turn] += board_coin[pos]; // Get coin
+    		board_coin[pos] = 0; // Remove coins from the location
+		}
         
         //step 2-5. end process
-    
+    	checkDie();
+    	
 // ----- EX. 6 : game end ------------
     } while(game_end() == 0);
     
