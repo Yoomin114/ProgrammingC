@@ -81,6 +81,11 @@ int board_stepShark(void)
         shark_position = N_BOARD - 1; // Processing not to cross the end of the board
     }
     
+    // Update the board status to reflect shark's damage
+    if (shark_position >= 0) { // Only update valid positions
+        board_status[shark_position] = BOARDSTATUS_NOK;
+    }
+    
     return shark_position;
 }
 

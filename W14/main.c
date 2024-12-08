@@ -115,16 +115,14 @@ void printPlayerStatus(void)
 void checkDie(void)
 {
     int i;
-    for (i=0;i<N_PLAYER;i++)
-    {
-    	//Correct status check
-        if (board_getBoardStatus(player_position[i]) == BOARDSTATUS_NOK)
-        {
+    for (i = 0; i < N_PLAYER; i++) {
+        if (player_status[i] == PLAYERSTATUS_LIVE && board_getBoardStatus(player_position[i]) == BOARDSTATUS_NOK) {
             printf("%s in pos %i has died!! (coin %i)\n", player_name[i], player_position[i], player_coin[i]);
             player_status[i] = PLAYERSTATUS_DIE;
         }
     }
 }
+
 
 
 // ----- EX. 6 : game end ------------
@@ -189,6 +187,11 @@ int getWinner(void)
         }
     }
     
+    if (winner == -1) { // If no winner was determined
+    	printf("No players survived. No winner!\n");
+    	return -1;
+	}
+		
     return winner;
 }
 
@@ -260,7 +263,15 @@ int main(int argc, const char * argv[]) {
         dieResult = rolldie(); // Calling a function to receive input and roll the dice
         
 		//step 2-3. moving
-		player_position[turn] = (player_position[turn] + dieResult) % N_BOARD;
+		if (player_position[turn] + dieResult >= N_BOARD) {
+			player_position[turn] = N_BOARD - 1; // Move to the last position
+    		player_status[turn] = PLAYERSTATUS_END; // Mark player as finished
+			printf("%s has reached the end of the board!\n", player_name[turn]);
+		} 
+		else {
+    		player_position[turn] += dieResult; // Regular movement
+		}
+
         
 		// ----- EX. 4 : player ------------
 		//step 2-4. coin
