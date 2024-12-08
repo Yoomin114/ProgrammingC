@@ -76,16 +76,20 @@ int board_initBoard(void)
 // Shark Movement Function
 int board_stepShark(void)
 {
+	int i;
+	int previous_position = shark_position; // Record current position before moving
     shark_position += rand() % MAX_SHARKSTEP + 1; // // Randomly move 1 to 6 spaces
+    
     if (shark_position >= N_BOARD) {
         shark_position = N_BOARD - 1; // Processing not to cross the end of the board
     }
     
-    // Update the board status to reflect shark's damage
-    if (shark_position >= 0) { // Only update valid positions
-        board_status[shark_position] = BOARDSTATUS_NOK;
-    }
-    
+    // Update board status for all positions the shark passed through
+    for (i = previous_position + 1; i <= shark_position; i++) {
+        if (i >= 0 && i < N_BOARD) { // Ensure valid range
+            board_status[i] = BOARDSTATUS_NOK;
+        }
+    }   
     return shark_position;
 }
 
